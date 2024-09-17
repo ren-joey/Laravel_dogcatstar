@@ -53,9 +53,19 @@ After the setting, you may manipulate Laravel easily by:
 ```bash
 sail up --build -d
 ```
+First start operations:
+```bash
+sail artisan migrate
+sail artisan key:generate
+```
 Once you finish works, remember to stop and remove the container to release your data storage.
 ```bash
 sail down -v
+```
+To clear the cache:
+```bash
+sail artisan config:clear
+sail artisan cache:clear
 ```
 
 ## Learning Laravel
