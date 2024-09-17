@@ -7,6 +7,8 @@
         "Kirschbaum",
         "Curotec",
         "Redberry",
-        "Otwell"
+        "Otwell",
+        "autoload",
+        "tokenable"
     ]
 }
