@@ -7,6 +7,80 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+# How To Use
+Make sure that your windows installed WSL, Ubuntu, and Docker.
+You can follow the steps below to install Laravel Sail and start it, or you can read the [official guides](https://laravel.com/docs/11.x/sail) to proceed the installation.
+
+### Set System Environments
+Copy the `.env.example` and rename it as `.env`
+
+### Virtualization Tools Installation
+Check if Ubuntu is installed:
+```bash
+wsl --list --verbose
+#   NAME              STATE           VERSION
+# * Ubuntu            Running         2
+#   docker-desktop    Running         2
+```
+If Ubuntu doesn't show up in the list, you can install it by:
+```bash
+wsl --install -d Ubuntu
+wsl --set-default Ubuntu
+```
+
+### Start The Containers
+Then you can use `bash` command to log into the Ubuntu terminal:
+```bash
+bash
+```
+Use the following command to run Laravel Sail<br>
+```bash
+# Notice: This should be ran in the Ubuntu bash terminal
+./vendor/bin/sail up --build -d
+```
+Set a command alias to facilitate the developing process
+```bash
+# Notice: This should be ran in the Ubuntu bash terminal
+alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
+```
+After the setting, you may manipulate Laravel easily by:
+```bash
+# Notice: This should be ran in the Ubuntu bash terminal
+sail up --build -d
+```
+
+### Access The Service
+Once all dependent container are started, you may access the service by [http://localhost](http://localhost) <br>
+If you are using `Postman v2.1^` to proceed the test, you may use the [configuration](./postman/Laravel.postman_collection.json) to import the APIs at once.
+|Method|API|Payload|Header|
+|---|---|---|---|
+|GET|{{base_url}}/orders|{}|{}|
+|POST|{{base_url}}/orders/create|{"name": "test", "price": 1000}|{"Authorization" : "Bearer <JWT_TOKEN>"}|
+|PUT|{{base_url}}/orders/{id}|{"name": "test2"}|{"Authorization" : "Bearer <JWT_TOKEN>"}|
+|DEL|{{base_url}}/orders/{id}|{}|{"Authorization" : "Bearer <JWT_TOKEN>"}|
+|POST|{{base_url}}/auth/signup|{"name": "user3", "password": "123456789", "password_confirmation": "123456789", "email": "user3@test.com"}|{}|
+|POST|{{base_url}}/auth/login|{"email": "user3@test.com","password": "123456789"}|{}|
+
+First start operations:
+```bash
+# Notice: This should be ran in the Ubuntu bash terminal
+sail artisan migrate
+sail artisan key:generate
+```
+Once you finish works, remember to stop and remove the container to release your data storage.
+```bash
+# Notice: This should be ran in the Ubuntu bash terminal
+sail down -v
+```
+To clear the cache:
+```bash
+# Notice: This should be ran in the Ubuntu bash terminal
+sail artisan route:clear
+sail artisan config:clear
+sail artisan cache:clear
+sail composer dump-autoload
+```
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
